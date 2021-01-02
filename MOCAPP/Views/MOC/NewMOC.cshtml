@@ -1,0 +1,474 @@
+﻿@model MOCAPP.Models.MOC_Model.New_MOC_Model
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+
+    .badge {
+        display: inline-block;
+        min-width: 10px;
+        padding: 4px 7px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        background-color: red;
+        border-radius: 10px;
+    }
+</style>
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<link href="~/assets/css/jquery-ui.css" rel="stylesheet" />
+
+<script src="~/assets/js/xdsoft_datetimepicker.full.js"></script>
+<link href="~/assets/css/xdsoft_datetimepicker.css" rel="stylesheet" />
+
+<link href="~/assets/css/dataTables.jqueryui.min.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12">
+
+        <ol class="breadcrumb" style="background: #32C2CD;height:44px;padding:17px">
+
+            NEW MOC
+        </ol>
+    </div>
+</div>
+
+
+
+
+
+
+<div id="printdivcontent">
+
+
+    @using (Html.BeginForm("NewMOC", "MOC", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <form>
+            @if (TempData["ImageErr"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible">
+                    <a href="/MOC/NewMOC" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <h4> @TempData["ImageErr"]</h4>
+                </div>
+            }
+
+            @if (TempData["SaveSuccees"] != null)
+            {
+                <div class="alert alert-success alert-dismissible">
+                    <a href="/MOC/NewMOC" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <h4> @TempData["SaveSuccees"]</h4>
+                </div>
+            }
+
+            @if (TempData["SaveErr"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible">
+                    <a href="/MOC/NewMOC" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <h4> @TempData["SaveErr"]</h4>
+                </div>
+            }
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        @*<h3>MOC</h3>*@
+
+                        <table class="table table-bordered " style="width:80%">
+
+                            <tbody>
+
+                                <tr>
+                                    <td>Description</td>
+                                    <td>Station</td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+
+                                        @Html.TextBox("Description", null, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Description, "", new { @class = "badge badge-pill badge-warning text-danger" })
+                                    </td>
+                                    <td>
+                                        <select name="Station" required="required" id="txt_Station" class="form-control">
+                                            <option value="0">Select Station</option>
+                                            <option value="CHAKSU">CHAKSU</option>
+                                            <option value="MOHANPURA">MOHANPURA</option>
+                                            <option value="SANGANER">SANGANER</option>
+
+                                        </select>
+                                        @Html.ValidationMessageFor(s => s.Station, "", new { @class = "badge badge-pill badge-warning text-uppercase" })
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered " style="width:80%">
+
+                            <tbody>
+
+                                <tr>
+                                    <td>PL/HO/HSE/18</td>
+                                    <td> <label id="datelbl2"></label></td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <ol class="breadcrumb" style="background: #32C2CD;height:44px;padding:17px">
+
+                        MANAGEMENT OF CHANGE  FORMAT FOR SEEKING APPROVAL FOR CHANGE
+                    </ol>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        @*<h3>MOC</h3>*@
+
+                        <table class="table table-bordered " style="width:80%">
+
+                            <tbody>
+
+                                <tr>
+                                    <td>Date</td>
+                                    <td> <label id="datelbl"></label></td>
+
+                                </tr>
+                                <tr>
+                                <tr>
+                                    <td>Department</td>
+                                    <td>
+                                        <select name="Department" required="required" id="txt_Department" class="form-control">
+                                            <option value="0">Select Department</option>
+                                            <option value="CIVIL">CIVIL</option>
+                                            <option value="ELECTRICAL">ELECTRICAL</option>
+                                            <option value="MAINLINE">MAINLINE</option>
+                                            <option value="MECHANICAL">MECHANICAL</option>
+                                            <option value="OPERATIONS">OPERATIONS</option>
+                                            <option value="T&I">T&I</option>
+                                            <option value="OTHER">OTHER</option>
+
+                                        </select>
+                                        @Html.ValidationMessageFor(s => s.Department, "", new { @class = "badge badge-pill badge-warning text-uppercase" })
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>Type Of Change</td>
+                                    <td>
+                                        <select name="Type_of_Change" required="required" id="txt_Type_of_Change" class="form-control">
+                                            <option value="0">Select Type Of Change</option>
+                                            <option value="PERMANENT">PERMANENT</option>
+                                            <option value="TEMPORARY">TEMPORARY</option>
+
+                                        </select>
+                                        @Html.ValidationMessageFor(s => s.Type_of_Change, "", new { @class = "badge badge-pill badge-warning text-uppercase" })
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>Process / Equipment Details / Identification Tag No.</td>
+                                    <td>
+                                        @Html.TextBox("Identified_Tagno", null, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Identified_Tagno, "", new { @class = "badge badge-pill badge-warning text-danger" })
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>.Details of Process / Component / Circuit / system proposed to be changed</td>
+                                    <td>
+                                        @Html.TextBox("Circuit", null, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Circuit, "", new { @class = "badge badge-pill badge-warning text-danger" })
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>Reasons for change</td>
+                                    <td>
+                                        @Html.TextBox("Reasons_Change", null, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Reasons_Change, "", new { @class = "badge badge-pill badge-warning text-danger" })
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>Likely impact of change</td>
+                                    <td>
+                                        @Html.TextBox("Impact_Change", null, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Impact_Change, "", new { @class = "badge badge-pill badge-warning text-danger" })
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>Risk Analysis / Hazard Identification (Change Proposed)</td>
+                                    <td>
+                                        @Html.TextBox("Change_Proposed", null, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Change_Proposed, "", new { @class = "badge badge-pill badge-warning text-danger" })
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>Risk Analysis / Hazard Identification (Hazards Identified)</td>
+
+                                    <td>
+                                        @Html.TextBox("Hazards_Identified", null, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Hazards_Identified, "", new { @class = "badge badge-pill badge-warning text-danger" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Arrangement for mitigation of impact / Additional precautions , if any</td>
+
+                                    <td>
+                                        @Html.TextBox("Arrang_mitigation", null, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Arrang_mitigation, "", new { @class = "badge badge-pill badge-warning text-danger" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Revised drawings (if required)</td>
+
+                                    <td>
+
+                                        <input type="file" name="ImageData" id="ImageData" onchange="ValidateSize(this)" class="col-md-12 col-sm-12 col-xs-12" />
+
+                                        <br />
+                                        <br />
+                                        <label style="color:red">
+                                            Upload JPEG/PDF/PNG Format Only
+                                        </label>
+
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Periodicity for change (From Date)</td>
+
+                                    <td>
+                                        <input type="text" name="Periodicity_date_from" class="form-control" id="txt_Periodicity_date_from" readonly/>
+                                     
+                                        @Html.ValidationMessageFor(s => s.Periodicity_date_from, "", new { @class = "badge badge-pill badge-warning text-danger" })
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Periodicity for change (TO Date)</td>
+
+                                    <td>
+                                      
+                                        <input type="text" name="Periodicity_date_To" class="form-control" id="txt_Periodicity_date_To" readonly/>
+                                        @Html.ValidationMessageFor(s => s.Periodicity_date_To, "", new { @class = "badge badge-pill badge-warning text-danger" })
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>REMARK</td>
+
+                                    <td>
+                                        @Html.TextBox("Remark", null, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Remark, "", new { @class = "badge badge-pill badge-warning text-danger" })
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td></td>
+
+                                    <td>
+                                    </td>
+                                </tr>
+
+
+
+
+                            </tbody>
+                        </table>
+
+
+                        <table class="table table-bordered " style="width:80%; ">
+
+                            <tbody>
+
+
+                                <tr>
+                                    <td><b>Station:</b></td>
+                                    <td> Chakshu</td>
+
+                                </tr>
+                                <tr>
+                                    <td><b>Reviewer:</b></td>
+                                    <td> SUSHIL BHATI, DGM (O&M)</td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+                        <table class="table table-bordered " style="width:80%; ">
+
+                            <tbody>
+
+
+                                <tr>
+                                    <td><b>Originator</b></td>
+                                    <td> <b>Reviewer</b></td>
+                                    <td> <b>Approver</b></td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>Signature:</td>
+                                    <td> Signature:</td>
+                                    <td> Signature:</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Name:</td>
+                                    <td> Name:</td>
+                                    <td>Name:</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Designation:</td>
+                                    <td> Designation:</td>
+                                    <td> Designation:</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>Remark:</td>
+                                    <td> Remark:</td>
+                                    <td> Remark:</td>
+
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered " style="width:80%">
+
+                            <tbody>
+
+                                <tr>
+                                    <td><button type="button" class="btn btn-info" onclick="PrintDiv();">PREVIEW</button></td>
+                                    <td> <input type="submit" class="btn btn-success" value="Submit" /></td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </form>
+
+    }
+</div>
+
+
+<script>
+    function ValidateSize(file) {
+
+        var FileSize = file.files[0].size / 1024 / 1024; // in MB
+        if (FileSize > 2) {
+            alert('File is too Large, Maximum file size is 2 MB. Upload Again.');
+            $(file).val(''); //for clearing with Jquery
+        } else {
+
+
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        n = new Date();
+        y = n.getFullYear();
+        m = n.getMonth() + 1;
+        d = n.getDate();
+        document.getElementById("datelbl").innerHTML = d + "/" + m + "/" + y;
+        document.getElementById("datelbl2").innerHTML = d + "/" + m + "/" + y;
+    });
+</script>
+
+<script type="text/javascript">
+    function PrintDiv() {
+        var divContents = document.getElementById("printdivcontent").innerHTML;
+        var printWindow = window.open('', '');
+        printWindow.document.write('<html><head><title></title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
+<script type="text/javascript">
+   
+    var d = new Date();
+    d.setDate(d.getDate());
+
+    var d1 = new Date();
+    d1.setDate(d.getDate() + 7);
+  
+    $('#txt_Periodicity_date_from').datetimepicker({
+        format: 'd/m/Y',
+        // minDate: +1,
+        timepicker: false,
+        changeMonth: true,
+        changeYear: true,
+
+    });
+</script>
+
+<script type="text/javascript">
+
+    var d = new Date();
+    d.setDate(d.getDate());
+
+    var d1 = new Date();
+    d1.setDate(d.getDate() + 7);
+
+    $('#txt_Periodicity_date_To').datetimepicker({
+        format: 'd/m/Y',
+        // minDate: +1,
+        timepicker: false,
+        changeMonth: true,
+        changeYear: true,
+
+    });
+</script>

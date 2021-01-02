@@ -1,0 +1,222 @@
+﻿
+@model MOCAPP.Models.MOC_Model.New_MOC_Model
+@{
+    ViewBag.Title = "MOC Record View";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/assets/js/jquery.dataTables.min.js"></script>
+<link href="~/assets/css/jquery-ui.css" rel="stylesheet" />
+<link href="~/assets/css/dataTables.jqueryui.min.css" rel="stylesheet" />
+<link href="~/assets/css/fixedColumns.jqueryui.min.css" rel="stylesheet" />
+
+
+
+<script src="~/assets/js/xdsoft_datetimepicker.full.js"></script>
+<link href="~/assets/css/xdsoft_datetimepicker.css" rel="stylesheet" />
+
+<div class="row" id="print">
+    <div class="col-md-12">
+
+        <ol class="breadcrumb" style="background: #32C2CD;height:44px;padding:17px">
+
+            MOC Record Edit
+        </ol>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+
+
+
+                @if (TempData["Updatesucee"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible">
+                        <a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <h4> @TempData["Updatesucee"]</h4>
+                    </div>
+                }
+
+                @if (TempData["UpdateErr"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible">
+                        <a  class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <h4> @TempData["UpdateErr"]</h4>
+                    </div>
+                }
+
+
+                @using (Html.BeginForm("MOCRecordEdit", "MOC", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+
+                    if (TempData["EditMoc"] != null)
+                    {
+                        foreach (var item in TempData["EditMoc"] as List<MOCAPP.Models.MOC_Model.New_MOC_Model>)
+                        {
+                            <table class="table table-bordered " style="width:80%">
+
+                                <tr>
+                                    <td> <label for="Mocnumber">MOC No.</label></td>
+                                    <td><input type="text" class="form-control" id="MOC_Number" name="MOC_Number" value="@item.MOC_Number" readonly /> </td>
+                                </tr>
+                                <tr>
+                                    <td> <label for="Station">Station</label></td>
+
+                                    <td>
+                                        <input type="hidden" id="hdnstation" name="hdnstation" value="@item.Station">
+                                        <select name="Station" required="required" id="txt_Station" class="form-control">
+                                            <option value="0">Select Station</option>
+                                            <option value="1">CHAKSU</option>
+                                            <option value="2">MOHANPURA</option>
+                                            <option value="3">SANGANER</option>
+
+                                        </select>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> <label for="Department">Department</label></td>
+                                    <td>
+                                        <input type="hidden" id="hdndepart" name="hdndepart" value="@item.Department">
+                                        <select name="Department" required="required" id="Department" class="form-control">
+                                            <option value="0">Select Department</option>
+                                            <option value="1">CIVIL</option>
+                                            <option value="2">ELECTRICAL</option>
+                                            <option value="3">MAINLINE</option>
+                                            <option value="4">MECHANICAL</option>
+                                            <option value="5">OPERATIONS</option>
+                                            <option value="6">T&I</option>
+                                            <option value="7">OTHER</option>
+
+                                        </select>
+
+                                </tr>
+                                <tr>
+                                    <td> <label for="Moctype">MOC Type</label></td>
+                                    <td>
+
+
+                                        <input type="hidden" id="hdntypeofchange" name="hdntypeofchange" value="@item.Type_of_Change">
+                                        <select name="txt_Type_of_Change" required="required" id="txt_Type_of_Change" class="form-control">
+                                            <option value="0">Select Type Of Change</option>
+                                            <option value="1">PERMANENT</option>
+                                            <option value="2">TEMPORARY</option>
+
+                                        </select>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> <label for="Description">MOC Description</label></td>
+                                    <td>@Html.TextBoxFor(m => item.Description, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <td> <label for="Startdate">Start Date</label></td>
+                                    <td><input type="text" class="form-control" id="Periodicity_date_from" name="Periodicity_date_from" value="@item.Periodicity_date_from" readonly /> </td>
+                                </tr>
+
+                                <tr>
+                                    <td> <label for="Enddate">End Date</label></td>
+                                    <td> <input type="text" class="form-control" id="Periodicity_date_To" name="Periodicity_date_To" value="@item.Periodicity_date_To" readonly /></td>
+                                </tr>
+                                <tr>
+                                    <td> <label for="Status">Status</label></td>
+                                    <td><input type="text" class="form-control" id="Status" name="Status" value="@item.Status" /></td>
+                                </tr>
+                                <tr>
+                                    <td> <label for="Status">Remark</label></td>
+                                    <td><input type="text" class="form-control" id="Remark" name="Remark" value="@item.Remark" /></td>
+                                </tr>
+                                <tr>
+                                    <td> </td>
+                                    <td>
+                                        <input type="submit" value="Update" class="btn btn-success col-sm-push-2">&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="button" value="Close" class="btn btn-danger" onclick="location.href='@Url.Action("MOCRecord", "MOC")'" />
+                                    </td>
+
+                                </tr>
+                            </table>
+                        }
+                    }
+                    else
+                    {
+                        <table id="datatableSrNo" class="table table-striped table-hover">
+                            <tr>
+                                <td colspan="15">
+                                    <div class="alert alert-info fade in">
+                                        <i class="fa-fw fa fa-info"></i>
+                                        <strong>Info!</strong> No record found
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    }
+
+                }
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+
+        var htdntypemoc = $('#hdntypeofchange').val();
+        $("option:selected", $("#txt_Type_of_Change")).text(htdntypemoc);
+
+        var hdndepartment = $('#hdndepart').val();
+        $("option:selected", $("#Department")).text(hdndepartment);
+
+        var hdnstations = $('#hdnstation').val();
+        $("option:selected", $("#txt_Station")).text(hdnstations);
+    });
+</script>
+
+<script type="text/javascript">
+
+    var d = new Date();
+    d.setDate(d.getDate());
+
+    var d1 = new Date();
+    d1.setDate(d.getDate() + 7);
+
+    $('#Periodicity_date_from').datetimepicker({
+        format: 'd/m/Y',
+        // minDate: +1,
+        timepicker: false,
+        changeMonth: true,
+        changeYear: true,
+
+    });
+</script>
+
+<script type="text/javascript">
+
+    var d = new Date();
+    d.setDate(d.getDate());
+
+    var d1 = new Date();
+    d1.setDate(d.getDate() + 7);
+
+    $('#Periodicity_date_To').datetimepicker({
+        format: 'd/m/Y',
+        // minDate: +1,
+        timepicker: false,
+        changeMonth: true,
+        changeYear: true,
+
+    });
+</script>

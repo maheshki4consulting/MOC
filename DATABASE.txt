@@ -1,0 +1,322 @@
+
+
+CREATE TABLE New_MOC (
+   MOC_ID number(10)  NULL, 
+   Description varchar2(100)  NULL,
+   Station varchar2(50) NULL,   
+   Type_of_Change varchar2(100) NULL,  
+   Department varchar2(100) NULL,
+   Identified_Tagno  varchar2(100) NULL,
+    Circuit  varchar2(100) NULL,
+    Reasons_Change  varchar2(200) NULL,
+     Impact_Change  varchar2(200) NULL,
+     Change_Proposed  varchar2(200) NULL,
+     Hazards_Identified  varchar2(200) NULL,
+     Arrang_mitigation  varchar2(200) NULL,
+      Revised_Drawings  varchar2(200) NULL,
+      Periodicity_date_from date null,
+      Periodicity_time_from  varchar2(50) NULL,
+       Periodicity_date_To date null,
+      Periodicity_time_To  varchar2(50) NULL,
+   Cretedate date default sysdate,
+   CreateBy varchar2(100) NULL
+   )
+   
+   
+ALTER TABLE New_MOC ADD (
+  CONSTRAINT idmoc_pk PRIMARY KEY (MOC_ID));
+
+CREATE SEQUENCE idmoc_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER idmoctrg 
+BEFORE INSERT ON New_MOC 
+FOR EACH ROW
+
+BEGIN
+  SELECT idmoc_seq.NEXTVAL
+  INTO   :new.MOC_ID
+  FROM   dual;
+END;
+/
+
+====================
+
+
+
+
+  public class New_MOC_Model
+    {
+
+        public MOC_ID int { get; set; }
+        public string Description { get; set; }
+        public string Station { get; set; }
+        public string Type_of_Change { get; set; }
+        public string Department { get; set; }
+        public string Identified_Tagno { get; set; }
+		
+		 public string Circuit { get; set; }
+        public string Reasons_Change { get; set; }
+        public string Impact_Change { get; set; }
+        public string Change_Proposed { get; set; }
+        public string Hazards_Identified { get; set; }
+		 public string Arrang_mitigation { get; set; }
+         public string Revised_Drawings { get; set; }
+		 public DateTime Periodicity_date_from { get; set; }
+		  public string Periodicity_time_from { get; set; }
+		   public DateTime Periodicity_date_To { get; set; }
+		  public string Periodicity_time_To { get; set; }
+		   public DateTime Cretedate { get; set; }
+		    public string CreateBy { get; set; }
+
+
+
+    }
+
+
+/* Formatted on 24/12/2020 15:35:28 (QP5 v5.227.12220.39754) */
+CREATE OR REPLACE PROCEDURE SP_MOC_INS (
+   p_Description              IN   VARCHAR2 default null,
+   p_Station                 IN   VARCHAR2 default null,
+   p_Type_of_Change          IN   VARCHAR2 default null,
+   p_Department              IN   VARCHAR2 default null,
+   p_Identified_Tagno        IN   VARCHAR2 default null,
+   p_Circuit                  IN   VARCHAR2 default null,
+   p_Reasons_Change           IN   VARCHAR2 default null,
+   p_Impact_Change           IN   VARCHAR2 default null,
+   p_Change_Proposed         IN   VARCHAR2 default null,
+   p_Hazards_Identified       IN   VARCHAR2 default null,
+   p_Arrang_mitigation        IN   VARCHAR2 default null,
+   p_Revised_Drawings        IN   VARCHAR2 default null,
+   p_Periodicity_date_from   IN   date default null,
+   p_Periodicity_time_from   IN   VARCHAR2 default null,
+   p_Periodicity_date_To      IN   date default null,
+   p_Periodicity_time_To      IN   VARCHAR2 default null,
+   p_CreateBy                 IN   VARCHAR2 default null)
+
+IS
+BEGIN
+   INSERT INTO New_MOC (Description,
+                        Station,
+                        Type_of_Change,
+                        Department,
+                        Identified_Tagno,
+                        Circuit,
+                        Reasons_Change,
+                        Impact_Change,
+                        Change_Proposed,
+                        Hazards_Identified,
+                        Arrang_mitigation,
+                        Revised_Drawings,
+                        Periodicity_date_from,
+                        Periodicity_time_from,
+                        Periodicity_date_To,
+                        Periodicity_time_To,
+                        CreateBy)
+        VALUES (p_Description,
+                p_Station,
+                p_Type_of_Change,
+                p_Department,
+                p_Identified_Tagno,
+                p_Circuit,
+                p_Reasons_Change,
+                p_Impact_Change,
+                p_Change_Proposed,
+                p_Hazards_Identified,
+                p_Arrang_mitigation,
+                p_Revised_Drawings,
+                p_Periodicity_date_from,
+                p_Periodicity_time_from,
+                p_Periodicity_date_To,
+                p_Periodicity_time_To,
+                p_CreateBy);
+
+   COMMIT;
+END;
+/
+
+==================================
+
+
+ CREATE TABLE MOC_DEPARTMENT
+(
+   ID    NUMBER (10) NULL,
+   DEP_ID      NUMBER (10) NULL,
+   DEPARTMENT   VARCHAR2 (200 BYTE) NULL,
+   CREATEDATE    DATE DEFAULT SYSDATE,
+   CREATED_BY   NUMBER (10) NULL
+);
+
+
+ALTER TABLE MOC_DEPARTMENT ADD (
+  CONSTRAINT MOC_PK PRIMARY KEY (ID));
+
+
+CREATE OR REPLACE TRIGGER MOC_DEPARTMENT_TRIG
+   BEFORE INSERT
+   ON MOC_DEPARTMENT
+   FOR EACH ROW
+BEGIN
+   IF INSERTING
+   THEN
+      IF :NEW.ID IS NOT NULL AND :NEW.ID != 0
+      THEN
+         RAISE_APPLICATION_ERROR (-20001,
+                                  'DEPRECIATION ID Can not be user defined.');
+      END IF;
+
+      SELECT NVL (MAX (ID), 0) + 1
+        INTO :NEW.ID
+        FROM MOC_DEPARTMENT;
+
+      IF :NEW.ID = 0
+      THEN
+         :NEW.ID := 1;
+      END IF;
+
+   END IF;
+END;
+/
+
+===================================================
+CREATE TABLE MOC_TYPE
+(
+   ID    NUMBER (10) NULL,
+   TYPE_ID      NUMBER (10) NULL,
+   MOCTYPE   VARCHAR2 (200 BYTE) NULL,
+   CREATEDATE    DATE DEFAULT SYSDATE,
+   CREATED_BY   NUMBER (10) NULL
+);
+
+
+ALTER TABLE MOC_TYPE ADD (
+  CONSTRAINT MOC_typePK PRIMARY KEY (ID));
+
+
+CREATE OR REPLACE TRIGGER MOC_Type_TRIG
+   BEFORE INSERT
+   ON MOC_TYPE
+   FOR EACH ROW
+BEGIN
+   IF INSERTING
+   THEN
+      IF :NEW.ID IS NOT NULL AND :NEW.ID != 0
+      THEN
+         RAISE_APPLICATION_ERROR (-20001,
+                                  'DEPRECIATION ID Can not be user defined.');
+      END IF;
+
+      SELECT NVL (MAX (ID), 0) + 1
+        INTO :NEW.ID
+        FROM MOC_TYPE;
+
+      IF :NEW.ID = 0
+      THEN
+         :NEW.ID := 1;
+      END IF;
+
+   END IF;
+END;
+/
+======================================
+CREATE TABLE MOC_STATION
+(
+   ID    NUMBER (10) NULL,
+   STATION_ID      NUMBER (10) NULL,
+   STATION   VARCHAR2 (200 BYTE) NULL,
+   CREATEDATE    DATE DEFAULT SYSDATE,
+   CREATED_BY   NUMBER (10) NULL
+);
+
+
+ALTER TABLE MOC_STATION ADD (
+  CONSTRAINT MOC_STPK PRIMARY KEY (ID));
+
+
+CREATE OR REPLACE TRIGGER MOC_ST_TRIG
+   BEFORE INSERT
+   ON MOC_STATION
+   FOR EACH ROW
+BEGIN
+   IF INSERTING
+   THEN
+      IF :NEW.ID IS NOT NULL AND :NEW.ID != 0
+      THEN
+         RAISE_APPLICATION_ERROR (-20001,
+                                  'DEPRECIATION ID Can not be user defined.');
+      END IF;
+
+      SELECT NVL (MAX (ID), 0) + 1
+        INTO :NEW.ID
+        FROM MOC_STATION;
+
+      IF :NEW.ID = 0
+      THEN
+         :NEW.ID := 1;
+      END IF;
+
+   END IF;
+END;
+/
+=======================
+CREATE TABLE MOC_STATUS
+(
+   ID    NUMBER (10) NULL,
+   STATUS_ID      NUMBER (10) NULL,
+   STATUS   VARCHAR2 (200 BYTE) NULL,
+   CREATEDATE    DATE DEFAULT SYSDATE,
+   CREATED_BY   NUMBER (10) NULL
+);
+
+
+ALTER TABLE MOC_STATUS ADD (
+  CONSTRAINT MOC_STATUSPK PRIMARY KEY (ID));
+
+
+CREATE OR REPLACE TRIGGER MOC_STATUS_TRIG
+   BEFORE INSERT
+   ON MOC_STATUS
+   FOR EACH ROW
+BEGIN
+   IF INSERTING
+   THEN
+      IF :NEW.ID IS NOT NULL AND :NEW.ID != 0
+      THEN
+         RAISE_APPLICATION_ERROR (-20001,
+                                  'DEPRECIATION ID Can not be user defined.');
+      END IF;
+
+      SELECT NVL (MAX (ID), 0) + 1
+        INTO :NEW.ID
+        FROM MOC_STATUS;
+
+      IF :NEW.ID = 0
+      THEN
+         :NEW.ID := 1;
+      END IF;
+
+   END IF;
+END;
+/
+
+
+
+
+	
+=============================================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
